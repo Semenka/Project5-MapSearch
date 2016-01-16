@@ -44,13 +44,21 @@ function initAutocomplete(){
         scaledSize: new google.maps.Size(25, 25)
       };
 
-      // Create a marker for each place.
-      markers.push(new google.maps.Marker({
+      var marker= new google.maps.Marker({
         map: map,
         icon: icon,
         title: place.name,
         position: place.geometry.location
-      }));
+      });
+
+      infowindow = new google.maps.InfoWindow();
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(place.name);
+        infowindow.open(map,this);
+      });
+
+      // Create a marker for each place.
+      markers.push(marker);
 
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
@@ -75,10 +83,14 @@ function initAutocomplete(){
 var ViewModel=function(){
 	var self=this;
 
+
 	this.search=ko.observable("");
+	//this.map_filter=ko.observable("");
 	this.search.subscribe(function(text){
 
-		console.log(text)
+	//	self.map_filter(text);
+		console.log(text);
+
 	});
 
 	//places_map.forEach(function(data){

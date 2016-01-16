@@ -9,20 +9,30 @@
             width: 400px;
             height: 400px;
         }
+        div {
+        display: inline-block;
+        }
+        #place_list{
+            width: 300px;
+            height:400px;
+        }
+
     </style>
 </head>
 <body>
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box" data-bind="textInput:search">
-    <div id="map"> </div>
     <h2> Key locations </h2>
-    <ul id="search list" data-bind="foreach:places_map">
-        <li data-bind="text:name"></li>
-    </ul>
+    <div id="place_list">
+        
+        <ul id="search list" data-bind="foreach:places_map">
+            <li data-bind="text:name"></li>
+        </ul>
+    </div>
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box"  data-bind="textInput:search">
+    <div id="map"> </div>
 
-    
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOL05YuuZJES7W6DUBjRoBiLocLfG7e10&libraries=places&callback=initAutocomplete"
          async defer>
-    
+
     </script>
     <script src="js/lib/knockout-3.2.0.js"></script>
     <script src="js/app.js"></script>
