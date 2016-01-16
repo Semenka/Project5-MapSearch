@@ -12,10 +12,10 @@
     </style>
 </head>
 <body>
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box" data-bind="textInput:search">
     <div id="map"> </div>
     <h2> Key locations </h2>
-    <ul id="search list" data-bind="foreach:places">
+    <ul id="search list" data-bind="foreach:places_map">
         <li data-bind="text:name"></li>
     </ul>
 

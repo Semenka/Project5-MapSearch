@@ -1,8 +1,8 @@
-var places_map=[];
+var places_map=ko.observableArray([]);
 
 function initAutocomplete(){
 	var map = new google.maps.Map(document.getElementById('map'), {
-    	center: {lat: -33.8688, lng: 151.2195},
+    	center: {lat: 24.472221, lng: 54.328119},
     	zoom: 13,
     	mapTypeId: google.maps.MapTypeId.ROADMAP
   	});
@@ -18,7 +18,7 @@ function initAutocomplete(){
   	// [START region_getplaces]
   	// Listen for the event fired when the user selects a prediction and retrieve
   	// more details for that place.
-  	searchBox.addListener('places_changed', function() {
+  	searchBox.addListener('places_changed',function(){
     var places = searchBox.getPlaces();
 
     if (places.length == 0) {
@@ -33,6 +33,8 @@ function initAutocomplete(){
 
     // For each place, get the icon, name and location.
     var bounds = new google.maps.LatLngBounds();
+    places_map.removeAll();
+
     places.forEach(function(place) {
       var icon = {
         url: place.icon,
@@ -57,45 +59,36 @@ function initAutocomplete(){
         bounds.extend(place.geometry.location);
       }
 
-
       places_map.push(place);
-      console.log(place);
 
     });
+
     map.fitBounds(bounds);
   });
 }
 
-var Place=function(data){
-	this.name=ko.observable(data.name);
 
-}
+
 
 
 
 var ViewModel=function(){
 	var self=this;
-	this.places=ko.observableArray([]);
-	//Nothing yet in places_map!!!!Add interaction with map
-	places_map.forEach(function(data){
-		
-			self.places.push(new Place(data));
-			//console.log(name);
-		
+
+	this.search=ko.observable("");
+	this.search.subscribe(function(text){
+
+		console.log(text)
 	});
-  	
-  // [END region_getplaces]
-	//this.places.push({name:"Moscow"});
 
+	//places_map.forEach(function(data){
 
+	//		self.places.push(new Place(data));
+			//console.log(name);
 
-	//this.places=ko.observableArray([]);
-	//this.initAutocomplete();
-	//search_places.forEach(function(place){
-
-	//	self.places.push(new Place(place));
 	//});
 }
 
-
 ko.applyBindings(new ViewModel());
+
+
