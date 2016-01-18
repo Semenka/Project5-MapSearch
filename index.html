@@ -22,10 +22,12 @@
 <body>
     <h2> Key locations </h2>
     <div id="place_list">
-        
+
         <ul id="search list" data-bind="foreach:places_map">
-            <li data-bind="text:name"></li>
+            <li data-bind="text:title,click:$parent.setMarker"></li>
+
         </ul>
+
     </div>
     <input id="pac-input" class="controls" type="text" placeholder="Search Box"  data-bind="textInput:search">
     <div id="map"> </div>

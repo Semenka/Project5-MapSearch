@@ -1,23 +1,49 @@
 var places_map=ko.observableArray([]);
+var search=ko.observable("");
+
+var init_map=function(){
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 24.472221, lng: 54.328119},
+      zoom: 13,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+
+  var markers=places_map();
+    markers.forEach(function(marker) {
+     // make markers clickable with window
+      infowindow = new google.maps.InfoWindow();
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(marker.title);
+        infowindow.open(map,this);
+      });
+      marker.setMap(map);
+    });
+
+return map;
+}
+
 
 function initAutocomplete(){
-	var map = new google.maps.Map(document.getElementById('map'), {
-    	center: {lat: 24.472221, lng: 54.328119},
-    	zoom: 13,
-    	mapTypeId: google.maps.MapTypeId.ROADMAP
-  	});
+    var map=init_map();
   	// Create the search box and link it to the UI element.
   	var input = document.getElementById('pac-input');
   	var searchBox = new google.maps.places.SearchBox(input);
   	map.controls[google.maps.ControlPosition.LEFT].push(input);
   	// Bias the SearchBox results towards current map's viewport.
   	map.addListener('bounds_changed', function() {
-    	searchBox.setBounds(map.getBounds());
-  	});
+      searchBox.setBounds(map.getBounds());
+
+    });
   	var markers = [];
   	// [START region_getplaces]
   	// Listen for the event fired when the user selects a prediction and retrieve
   	// more details for that place.
+
+    search.subscribe(function(text){
+      console.log(text);
+    });
+
   	searchBox.addListener('places_changed',function(){
     var places = searchBox.getPlaces();
 
@@ -33,7 +59,9 @@ function initAutocomplete(){
 
     // For each place, get the icon, name and location.
     var bounds = new google.maps.LatLngBounds();
+    // Clear places array
     places_map.removeAll();
+
 
     places.forEach(function(place) {
       var icon = {
@@ -51,6 +79,7 @@ function initAutocomplete(){
         position: place.geometry.location
       });
 
+      //make markers clickable with window
       infowindow = new google.maps.InfoWindow();
       google.maps.event.addListener(marker, 'click', function() {
         infowindow.setContent(place.name);
@@ -60,14 +89,15 @@ function initAutocomplete(){
       // Create a marker for each place.
       markers.push(marker);
 
+
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
         bounds.union(place.geometry.viewport);
       } else {
         bounds.extend(place.geometry.location);
       }
-
-      places_map.push(place);
+      //Add places to observable array
+      places_map.push(marker);
 
     });
 
@@ -78,27 +108,17 @@ function initAutocomplete(){
 
 
 
-
-
 var ViewModel=function(){
 	var self=this;
+  this.setMarker=function(place){
+        console.log(place.title);
+        infowindow = new google.maps.InfoWindow();
+        var map=init_map();
+        infowindow.setContent(place.title);
+        infowindow.open(map,place);
+  }
 
 
-	this.search=ko.observable("");
-	//this.map_filter=ko.observable("");
-	this.search.subscribe(function(text){
-
-	//	self.map_filter(text);
-		console.log(text);
-
-	});
-
-	//places_map.forEach(function(data){
-
-	//		self.places.push(new Place(data));
-			//console.log(name);
-
-	//});
 }
 
 ko.applyBindings(new ViewModel());
