@@ -1,14 +1,14 @@
+//Array of markers
 var places_map=ko.observableArray([]);
 var search=ko.observable("");
 
+//Function to initialize map without search bar
 var init_map=function(){
-
   var map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 24.472221, lng: 54.328119},
       zoom: 13,
       mapTypeId: google.maps.MapTypeId.ROADMAP
   });
-
   var markers=places_map();
     markers.forEach(function(marker) {
      // make markers clickable with window
@@ -23,7 +23,7 @@ var init_map=function(){
 return map;
 }
 
-
+//Function initialize map with search bar bound to it
 function initAutocomplete(){
     var map=init_map();
   	// Create the search box and link it to the UI element.
@@ -40,9 +40,9 @@ function initAutocomplete(){
   	// Listen for the event fired when the user selects a prediction and retrieve
   	// more details for that place.
 
-    search.subscribe(function(text){
-      console.log(text);
-    });
+    //search.subscribe(function(text){
+    //  console.log(text);
+    //});
 
   	searchBox.addListener('places_changed',function(){
     var places = searchBox.getPlaces();
@@ -105,21 +105,40 @@ function initAutocomplete(){
   });
 }
 
+//Function to add images with tag using Flickr API
+var getImage=function(tag){
+  var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  $.getJSON( flickerAPI, {
+    tags: tag,
+    tagmode: "any",
+    format: "json"
+  })
+    .done(function( data ) {
+      $("#images").empty();
+      $.each( data.items, function( i, item ) {
+        $( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
+        if ( i === 2 ) {
+          return false;
+        }
+      });
+    });
 
+}
 
 
 var ViewModel=function(){
 	var self=this;
   this.setMarker=function(place){
-        console.log(place.title);
+        //console.log(place.title);
         infowindow = new google.maps.InfoWindow();
         var map=init_map();
         infowindow.setContent(place.title);
         infowindow.open(map,place);
+        new getImage(place.title);
   }
-
-
 }
+
+
 
 ko.applyBindings(new ViewModel());
 
