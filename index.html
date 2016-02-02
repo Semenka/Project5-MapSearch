@@ -1,33 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta charset="utf-8">
         <title>Map viewer</title>
-        <style>
-            #map {
-                width: 400px;
-                height: 400px;
-            }
-            div {
-                display: inline-block;
-            }
-        </style>
+        <link rel="stylesheet" href="css/main.css">
     </head>
-    <body>
-        <input id="pac-input" class="controls" type="text" placeholder="Search Box"  data-bind="textInput:search">
+        <input placeholder="Search…" type="search" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
         <div id="map"> </div>
-        <div id="places">
-            <ul id="search_list" data-bind="foreach:places_map">
-                <li data-bind="text:title,click:$parent.setMarker"></li>
-            </ul>
-        </div>
-        <div id="images"></div>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOL05YuuZJES7W6DUBjRoBiLocLfG7e10&libraries=places&callback=initAutocomplete"
-        async defer>
-        </script>
+        <ul id="search_list" data-bind="foreach:markers">
+            <li>
+                <strong data-bind="text:title,click:$parent.currentMarker"> </strong>
+            </li>
+        </ul>
+        <img src="" data-bind="attr:{src:image}">
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOL05YuuZJES7W6DUBjRoBiLocLfG7e10&signed_in=true&libraries=places&callback=initMap" async defer></script>
         <script src="js/lib/jquery.min.js"></script>
         <script src="js/lib/knockout-3.2.0.js"></script>
-        <script src="js/app.js"></script>
+        <script src="js/app2.js"></script>
     </body>
 </html>

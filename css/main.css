@@ -1,0 +1,15 @@
+#map {
+    width: 90vw;
+    height: 80vw;
+}
+
+div {
+    display: inline-block;
+}
+
+@media screen and (min-width: 40.5em) {
+  .product-img {
+    width: 50%;
+    float: left;
+  }
+}
