@@ -6,15 +6,20 @@
         <title>Map viewer</title>
         <link rel="stylesheet" href="css/main.css">
     </head>
-        <input placeholder="Search…" type="search" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
-        <div id="map"> </div>
-        <ul id="search_list" data-bind="foreach:markers">
-            <li>
-                <strong data-bind="text:title,click:$parent.currentMarker"> </strong>
-            </li>
-        </ul>
-        <img src="" data-bind="attr:{src:image}">
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOL05YuuZJES7W6DUBjRoBiLocLfG7e10&signed_in=true&libraries=places&callback=initMap" async defer></script>
+
+        <div class="places">
+            <input placeholder="Search…" type="search" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
+            <ul id="search_list" data-bind="foreach:markers">
+                <li>
+                    <strong data-bind="text:title,click:$parent.currentMarker"> </strong>
+                </li>
+            </ul>
+        </div>
+        <div class="places" id="map"></div>
+        <div class="images">
+            <img src="" data-bind="attr:{src:image}">
+        </div>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOL05YuuZJES7W6DUBjRoBiLocLfG7e10&signed_in=true&libraries=places&callback=initMap" onerror="googleError()" async defer></script>
         <script src="js/lib/jquery.min.js"></script>
         <script src="js/lib/knockout-3.2.0.js"></script>
         <script src="js/app2.js"></script>

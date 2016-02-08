@@ -1,15 +1,16 @@
-#map {
-    width: 90vw;
-    height: 80vw;
+
+.places{
+	width:48vw;
+	height:50vw;
+	margin: 0px;
+	border: 0px;
+	display: inline-block;
+	text-align: top;
+	vertical-align: top;
 }
 
-div {
-    display: inline-block;
-}
-
-@media screen and (min-width: 40.5em) {
-  .product-img {
-    width: 50%;
-    float: left;
-  }
+.images{
+	width: 98vw;
+	height:50vw;
+	text-align: right;
 }

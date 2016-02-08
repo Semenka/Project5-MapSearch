@@ -1,6 +1,8 @@
 var map;
 var infowindow;
+var marker;
 var initialPlaces=ko.observableArray();
+var timeout=3000;
 
 //Function initializing the map with markers
 function initMap() {
@@ -23,8 +25,9 @@ function initMap() {
 
 //Function creating initial places
 function callback(results, status) {
+  var l=results.length;
   if (status === google.maps.places.PlacesServiceStatus.OK) {
-    for (var i = 0; i < results.length; i++) {
+    for (var i = 0; i < l; i++) {
       createMarker(results[i]);
     }
   }
@@ -32,6 +35,7 @@ function callback(results, status) {
 
 //Create marker for each place
 function createMarker(place) {
+
   var marker = new google.maps.Marker({
     map: map,
     title: place.name,
@@ -41,14 +45,18 @@ function createMarker(place) {
   ViewModel.markers.push(marker);
   google.maps.event.addListener(marker, 'click', function() {
     ViewModel.getPicture(marker);
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    window.setTimeout(function(){
+      marker.setAnimation(null);
+    },timeout);
     infowindow.setContent(marker.title);
     infowindow.open(map, this);
-    if (marker.getAnimation() !== null) {
-      marker.setAnimation(null);
-    } else {
-      marker.setAnimation(google.maps.Animation.BOUNCE);
-    }
   });
+}
+
+//Error handler for google map
+function googleError(){
+  alert('Requested google map failed.');
 }
 
 // Sets the map on all markers in the array.
@@ -85,6 +93,9 @@ var ViewModel={
   //Display marker clicled on the list
   currentMarker:function(marker){
     marker.setAnimation(google.maps.Animation.BOUNCE);
+    window.setTimeout(function(){
+      marker.setAnimation(null);
+    },timeout);
     ViewModel.getPicture(marker);
     infowindow.setContent(marker.title);
     infowindow.open(map, marker);
@@ -98,12 +109,32 @@ var ViewModel={
       tagmode: "any",
       format: "json"
     })
-    .fail(function( jqXHR, textStatus ) {
-      console.log( "Request failed: " + jqXHR);
-    })
     .done(function(data) {
-      if (typeof data.items[0]=="object") {var ref=data.items[0].media.m};
+      if (typeof data.items[0]=="object") {
+        var ref=data.items[0].media.m
+      };
       ViewModel.image(ref);
+    });
+    $(function(){
+      $.ajaxSetup({
+        function(jqXHR, exception) {
+          if (jqXHR.status === 0) {
+              alert('Not connect.\n Verify Network.');
+          } else if (jqXHR.status == 404) {
+              alert('Requested page not found. [404]');
+          } else if (jqXHR.status == 500) {
+              alert('Internal Server Error [500].');
+          } else if (exception === 'parsererror') {
+              alert('Requested JSON parse failed.');
+          } else if (exception === 'timeout') {
+              alert('Time out error.');
+          } else if (exception === 'abort') {
+              alert('Ajax request aborted.');
+          } else {
+              alert('Uncaught Error.\n' + jqXHR.responseText);
+          }
+        }
+      });
     });
   }
 };
