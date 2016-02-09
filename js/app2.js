@@ -3,6 +3,7 @@ var infowindow;
 var marker;
 var initialPlaces=ko.observableArray();
 var timeout=3000;
+var myVar;
 
 //Function initializing the map with markers
 function initMap() {
@@ -51,6 +52,8 @@ function createMarker(place) {
     },timeout);
     infowindow.setContent(marker.title);
     infowindow.open(map, this);
+    //Error handler in Flickr API ajax request
+    myVar = setTimeout(function(){ alert("Error in Flickr request"); }, timeout);
   });
 }
 
@@ -99,6 +102,8 @@ var ViewModel={
     ViewModel.getPicture(marker);
     infowindow.setContent(marker.title);
     infowindow.open(map, marker);
+    //Error handler in Flickr API ajax request
+    myVar = setTimeout(function(){ alert("Error in Flickr request"); }, timeout);
   },
 
   //Get picture of selected place from flicker
@@ -109,33 +114,14 @@ var ViewModel={
       tagmode: "any",
       format: "json"
     })
+
     .done(function(data) {
       if (typeof data.items[0]=="object") {
         var ref=data.items[0].media.m
       };
+      clearTimeout(myVar);
       ViewModel.image(ref);
-    });
-    $(function(){
-      $.ajaxSetup({
-        function(jqXHR, exception) {
-          if (jqXHR.status === 0) {
-              alert('Not connect.\n Verify Network.');
-          } else if (jqXHR.status == 404) {
-              alert('Requested page not found. [404]');
-          } else if (jqXHR.status == 500) {
-              alert('Internal Server Error [500].');
-          } else if (exception === 'parsererror') {
-              alert('Requested JSON parse failed.');
-          } else if (exception === 'timeout') {
-              alert('Time out error.');
-          } else if (exception === 'abort') {
-              alert('Ajax request aborted.');
-          } else {
-              alert('Uncaught Error.\n' + jqXHR.responseText);
-          }
-        }
-      });
-    });
+    })
   }
 };
 
