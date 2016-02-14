@@ -1,31 +1,41 @@
-
-.places{
-	height:50vw;
-	margin: 0px;
-	border: 0px;
-	display: inline-block;
-	text-align: top;
-	vertical-align: top;
-	width:45vw;
-    float: none;
+html,body{
+	height:100%;
+	width:100%;
+}
+.maps {
+	height: 100%;
+	width: 100%;
+	z-index: 1;
 }
 
-
-.maps{
-	height:50vw;
-	margin: 0px;
-	border: 0px;
-	display: inline-block;
-	text-align: right;
-	vertical-align: top;
-	width:45vw;
-    float: right;
+nav {
+  width: 300px;
+  height: 100%;
+  position: absolute;
+  /* This trasform moves the drawer off canvas. */
+  -webkit-transform: translate(-300px, 0);
+  transform: translate(-300px, 0);
+  /* Optionally, we animate the drawer. */
+  transition: transform 0.3s ease;
+  z-index: 2;
+}
+.nav.open {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
 }
 
-.images{
-	height:50vw;
-	text-align: right;
-	width: 45vw;
-    float: right;
+@media screen and (min-width: 400px){
+	nav {
+		position: relative;
+		transform:translate(0,0);
+	}
+	body{
+		display: flex;
+		flex-flow:row nowrap;
+	}
+	.maps{
+		width:100vw;
+		flex-grow:1;
+	}
 }
 
