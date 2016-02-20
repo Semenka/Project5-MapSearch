@@ -1,11 +1,15 @@
-html,body{
+html,body,main{
 	height:100%;
 	width:100%;
 }
-.maps {
+
+#map{
 	height: 100%;
 	width: 100%;
-	z-index: 1;
+}
+a#menu svg {
+        width: 40px;
+        fill: #000;
 }
 
 nav {
@@ -19,23 +23,28 @@ nav {
   transition: transform 0.3s ease;
   z-index: 2;
 }
-.nav.open {
+nav.open {
   -webkit-transform: translate(0, 0);
   transform: translate(0, 0);
 }
 
-@media screen and (min-width: 400px){
+@media (min-width: 600px){
 	nav {
 		position: relative;
+		-webkit-transform: translate(0, 0);
 		transform:translate(0,0);
 	}
 	body{
-		display: flex;
-		flex-flow:row nowrap;
+		display: -webkit-flex;
+        display: flex;
+        -webkit-flex-flow: row nowrap;
+        flex-flow: row nowrap;
 	}
-	.maps{
-		width:100vw;
+	main {
+		width:100%;
 		flex-grow:1;
+		z-index: 1;
 	}
 }
+
 

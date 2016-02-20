@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <nav>
+        <nav id="drawer">
             <input class="search" placeholder="Search…" type="search" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
             <div class="places">
                 <ul id="search_list" data-bind="foreach:markers">
@@ -17,10 +17,30 @@
                 </ul>
             <div>
         </nav>
-        <div class="maps" id="map"></div>
+        <main id="main">
+            <a id="menu">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"></path>
+            </svg>
+            </a>
+
+            <div class="maps" id="map"></div>
+        </main>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOL05YuuZJES7W6DUBjRoBiLocLfG7e10&libraries=places&callback=initMap" onerror="googleError()" async defer></script>
         <script src="js/lib/jquery.min.js"></script>
         <script src="js/lib/knockout-3.2.0.js"></script>
         <script src="js/app2.js"></script>
+        <script>
+            var menu = document.getElementById('menu');
+            var main = document.getElementById('main');
+            var drawer = document.getElementById('drawer');
+            menu.addEventListener('click', function(e) {
+                drawer.classList.toggle('open');
+                e.stopPropagation();
+            });
+            main.addEventListener('click', function() {
+                drawer.classList.remove('open');
+            });
+        </script>
     </body>
 </html>

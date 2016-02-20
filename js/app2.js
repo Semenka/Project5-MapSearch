@@ -51,7 +51,7 @@ function createMarker(place) {
       marker.setAnimation(null);
     },timeout);
     ViewModel.getPicture(marker);
-    infowindow.setContent(ViewModel.image());
+    //infowindow.setContent(ViewModel.image());
     infowindow.open(map, this);
     //Error handler in Flickr API ajax request
     myVar = setTimeout(function(){ alert("Error in Flickr request"); }, timeout);
@@ -101,10 +101,9 @@ var ViewModel={
       marker.setAnimation(null);
     },timeout);
     ViewModel.getPicture(marker);
-    infowindow.setContent(ViewModel.image());
-    infowindow.open(map, marker);
     //Error handler in Flickr API ajax request
     myVar = setTimeout(function(){ alert("Error in Flickr request"); }, timeout);
+    infowindow.open(map, marker);
   },
 
   //Get picture of selected place from flicker
@@ -121,16 +120,19 @@ var ViewModel={
         var ref=data.items[0].media.m
       };
       clearTimeout(myVar);
-      var string='<div> <img src='+ref+' alt="image"> </div>';
+      if (ref==undefined || ref=="empty") {
+        var string="No image found";
+      } else {
+          var string='<div> <img src='+ref+' alt="image"> </div>';
+      };
       ViewModel.image(string);
+      infowindow.setContent(ViewModel.image());
     })
   }
 };
 
 ko.applyBindings(ViewModel);
 ViewModel.query.subscribe(ViewModel.search);
-
-
 
 
 
