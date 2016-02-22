@@ -50,8 +50,8 @@ function createMarker(place) {
     window.setTimeout(function(){
       marker.setAnimation(null);
     },timeout);
+    infowindow.setContent('');
     ViewModel.getPicture(marker);
-    //infowindow.setContent(ViewModel.image());
     infowindow.open(map, this);
     //Error handler in Flickr API ajax request
     myVar = setTimeout(function(){ alert("Error in Flickr request"); }, timeout);
@@ -100,6 +100,7 @@ var ViewModel={
     window.setTimeout(function(){
       marker.setAnimation(null);
     },timeout);
+    infowindow.setContent('');
     ViewModel.getPicture(marker);
     //Error handler in Flickr API ajax request
     myVar = setTimeout(function(){ alert("Error in Flickr request"); }, timeout);
